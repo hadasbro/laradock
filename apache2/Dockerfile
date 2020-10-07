@@ -32,6 +32,7 @@ RUN if [ ${APACHE_INSTALL_HTTP2} = true ]; then \
     && service apache2 restart \
 ;fi
 
-ENTRYPOINT ["/opt/docker/bin/entrypoint.sh"]
+COPY startup.sh /usr/bin/startup.sh
+RUN chmod a+x /usr/bin/startup.sh /opt/docker/bin/entrypoint.sh
 
-CMD ["supervisord"]
+ENTRYPOINT ["/usr/bin/startup.sh"]
