@@ -25,6 +25,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # If you're in China, or you need to change sources, will be set CHANGE_SOURCE to true in .env.
 
+ARG COMPOSER_PROJECT_INSTALL=false
+ARG YARN_PROJECT_INSTALL=false
+ARG BOWER_PROJECT_INSTALL=false
+ARG PIP_PROJECT_INSTALL=false
+
 ARG CHANGE_SOURCE=false
 RUN if [ ${CHANGE_SOURCE} = true ]; then \
     # Change application source from deb.debian.org to aliyun source
@@ -1508,3 +1513,19 @@ RUN apt-get clean && \
 
 # Set default work directory
 WORKDIR /var/www
+
+ENV ENV_YARN_PROJECT_INSTALL=${YARN_PROJECT_INSTALL}
+ENV ENV_BOWER_PROJECT_INSTALL=${BOWER_PROJECT_INSTALL}
+ENV ENV_PIP_PROJECT_INSTALL=${PIP_PROJECT_INSTALL}
+ENV ENV_COMPOSER_PROJECT_INSTALL=${COMPOSER_PROJECT_INSTALL}
+
+ENV ENV_INSTALL_NODE=${INSTALL_NODE}
+ENV ENV_INSTALL_YARN=${INSTALL_YARN}
+ENV ENV_INSTALL_BOWER=${INSTALL_NPM_BOWER}
+ENV ENV_INSTALL_PYTHON=${INSTALL_PYTHON}
+ENV ENV_INSTALL_PYTHON3=${INSTALL_PYTHON3}
+
+COPY startup.sh /usr/bin/startup.sh
+RUN chmod a+x /usr/bin/startup.sh
+
+ENTRYPOINT ["/usr/bin/startup.sh"]

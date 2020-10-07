@@ -156,6 +156,10 @@ services:
           - INSTALL_LNAV=${WORKSPACE_INSTALL_LNAV}
           - INSTALL_PROTOC=${WORKSPACE_INSTALL_PROTOC}
           - PROTOC_VERSION=${WORKSPACE_PROTOC_VERSION}
+          - COMPOSER_PROJECT_INSTALL=${WORKSPACE_COMPOSER_PROJECT_INSTALL}
+          - YARN_PROJECT_INSTALL=${WORKSPACE_YARN_PROJECT_INSTALL}
+          - BOWER_PROJECT_INSTALL=${WORKSPACE_BOWER_PROJECT_INSTALL}
+          - PIP_PROJECT_INSTALL=${WORKSPACE_PIP_PROJECT_INSTALL}
           - http_proxy
           - https_proxy
           - no_proxy
@@ -173,6 +177,7 @@ services:
         - "${WORKSPACE_VUE_CLI_UI_HOST_PORT}:8000"
         - "${WORKSPACE_ANGULAR_CLI_SERVE_HOST_PORT}:4200"
       tty: true
+      stdin_open: true
       environment:
         - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
         - DOCKER_HOST=tcp://docker-in-docker:2376
@@ -844,11 +849,11 @@ services:
 ### MeiliSearch ##########################################
     meilisearch:
       image: getmeili/meilisearch:latest
-      volumes: 
+      volumes:
         - ${DATA_PATH_HOST}/meilisearch:/var/lib/meilisearch
-      ports: 
+      ports:
         - "${MEILISEARCH_HOST_PORT}:7700"
-      networks: 
+      networks:
         - frontend
         - backend
 
@@ -1367,7 +1372,7 @@ services:
     docker-in-docker:
       image: docker:19.03-dind
       environment:
-        DOCKER_TLS_SAN: DNS:docker-in-docker      
+        DOCKER_TLS_SAN: DNS:docker-in-docker
       privileged: true
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
